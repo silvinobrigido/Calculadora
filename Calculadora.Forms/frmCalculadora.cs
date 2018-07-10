@@ -28,9 +28,12 @@ namespace Calculadora.Forms
 
             var valor1 = Convert.ToDecimal(valores[0]);
             var valor2 = Convert.ToDecimal(valores[1]);
-            decimal resultado;
+            decimal resultado = 0; 
 
-            switch (Operacao)
+            OperacaoFactory of = new OperacaoFactory();
+            resultado = of.GetCalculo(Operacao).calcular(valor1, valor2);
+
+            /*switch (Operacao)
             {
                 case Operador.Soma:
                     resultado = valor1 + valor2;
@@ -46,7 +49,7 @@ namespace Calculadora.Forms
                     break;
                 default:
                     throw new NotImplementedException();
-            }
+            }*/
 
             using (var file = new StreamWriter(logPath, true))
             {
