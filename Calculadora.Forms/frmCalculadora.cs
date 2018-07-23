@@ -25,41 +25,47 @@ namespace Calculadora.Forms
         private void btnCalcular_Click(object sender, EventArgs e)
         {
             var valores = txtDisplay.Text.Split('+', '-', '/', '*');
-
-            var valor1 = Convert.ToDecimal(valores[0]);
-            var valor2 = Convert.ToDecimal(valores[1]);
-            decimal resultado = 0; 
-
-            OperacaoFactory of = new OperacaoFactory();
-            resultado = of.GetCalculo(Operacao).calcular(valor1, valor2);
-
-            /*switch (Operacao)
+            if (valores.Length >= 2)
             {
-                case Operador.Soma:
-                    resultado = valor1 + valor2;
-                    break;
-                case Operador.Subtracao:
-                    resultado = valor1 - valor2;
-                    break;
-                case Operador.Divisao:
-                    resultado = valor1 / valor2;
-                    break;
-                case Operador.Multiplicacao:
-                    resultado = valor1 * valor2;
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }*/
+                var valor1 = Convert.ToDecimal(valores[0]);
+                var valor2 = Convert.ToDecimal(valores[1]);
+                decimal resultado = 0;
 
-            using (var file = new StreamWriter(logPath, true))
-            {
-                file.WriteLine($"[{DateTime.Now}] [Operação: {Operacao.ToString()}] [Primeiro Valor: {valor1.ToString()}] [Segundo Valor: { valor2.ToString()}] [Resultado: {resultado.ToString()}]");
+                OperacaoFactory of = new OperacaoFactory();
+                resultado = of.GetCalculo(Operacao).calcular(valor1, valor2);
+
+                /*switch (Operacao)
+                {
+                    case Operador.Soma:
+                        resultado = valor1 + valor2;
+                        break;
+                    case Operador.Subtracao:
+                        resultado = valor1 - valor2;
+                        break;
+                    case Operador.Divisao:
+                        resultado = valor1 / valor2;
+                        break;
+                    case Operador.Multiplicacao:
+                        resultado = valor1 * valor2;
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }*/
+
+                using (var file = new StreamWriter(logPath, true))
+                {
+                    file.WriteLine($"[{DateTime.Now}] [Operação: {Operacao.ToString()}] [Primeiro Valor: {valor1.ToString()}] [Segundo Valor: { valor2.ToString()}] [Resultado: {resultado.ToString()}]");
+                }
+
+                txtDisplay.Text = resultado.ToString();
+                txtDisplay.Focus();
+                txtDisplay.SelectionStart = txtDisplay.Text.Length;
+                txtDisplay.SelectionLength = 0;
             }
-
-            txtDisplay.Text = resultado.ToString();
-            txtDisplay.Focus();
-            txtDisplay.SelectionStart = txtDisplay.Text.Length;
-            txtDisplay.SelectionLength = 0;
+            else
+            {
+                MessageBox.Show("Digite mais de um valor");
+            }
         }
 
         private void txtDisplay_KeyPress(object sender, KeyPressEventArgs e)
